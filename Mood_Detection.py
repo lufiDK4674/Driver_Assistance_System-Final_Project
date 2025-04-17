@@ -3,7 +3,7 @@ import numpy as np
 from keras.src.saving.saving_api import load_model
 
 # Load the pre-trained model
-model = load_model('ferNet.keras')
+model = load_model('MoodDetection.keras')
 
 # Define the labels for the classes (modify based on your training)
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']

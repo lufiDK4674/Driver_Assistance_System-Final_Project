@@ -1,3 +1,4 @@
-.log
-.h5
+*.log
+*.h5
 *.keras
+*.dat

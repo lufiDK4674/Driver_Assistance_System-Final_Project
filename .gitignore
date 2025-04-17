@@ -1,4 +1,4 @@
-*.log
+# Ignore model files
 *.h5
 *.keras
 *.dat

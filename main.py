@@ -42,6 +42,7 @@ alarm_status2 = False
 saying = False
 COUNTER = 0
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+driver_safe = True  # Global safety flag
 
 # ---------------- Helper Functions ----------------
 def sound_alarm(path):
@@ -52,6 +53,13 @@ def sound_alarm(path):
         saying = True
         playsound.playsound(path)
         saying = False
+
+def send_vehicle_status(status):
+    try:
+        requests.post("http://localhost:5000/data", json={"status": status})
+        print(f"Sent vehicle status {status}")
+    except Exception as e:
+        print(f"Error sending vehicle status: {e}")
 
 def eye_aspect_ratio(eye):
     A = dist.euclidean(eye[1], eye[5])
@@ -86,7 +94,7 @@ def preprocess_frame(frame, target_size=(48, 48)):
 
 # ---------------- Main Function ----------------
 def main():
-    global alarm_status, alarm_status2, COUNTER
+    global alarm_status, alarm_status2, COUNTER, driver_safe
     frame_buffer = []
 
     vs = VideoStream(src=0).start()
@@ -96,6 +104,8 @@ def main():
         frame = vs.read()
         frame = imutils.resize(frame, width=450)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        driver_safe = True  # Assume safe, unless detections override
 
         # ----- Drowsiness Detection -----
         rects = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
@@ -119,6 +129,7 @@ def main():
                         alarm_status = True
                         Thread(target=sound_alarm, args=("Alert.wav",), daemon=True).start()
                     status_placeholder.markdown("### 🛑 DROWSINESS ALERT!")
+                    driver_safe = False
             else:
                 COUNTER = 0
                 alarm_status = False
@@ -128,6 +139,7 @@ def main():
                 if not alarm_status2 and not saying:
                     alarm_status2 = True
                     Thread(target=sound_alarm, args=("Alert.wav",), daemon=True).start()
+                driver_safe = False  # Treat yawn as unsafe
             else:
                 alarm_status2 = False
 
@@ -141,6 +153,9 @@ def main():
             cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
             cv2.putText(frame, emotion, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
             status_placeholder.markdown(f"### 😊 Mood Detected: {emotion}")
+
+            if emotion == "Angry":
+                driver_safe = False  # Override to unsafe
 
         # ----- Road Rage Detection -----
         frame_resized = cv2.resize(frame, (150, 150))
@@ -158,21 +173,29 @@ def main():
         # Show video in Streamlit
         frame_placeholder.image(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB), channels="RGB")
 
+        # ----- Vehicle Control based on combined safety -----
+        if driver_safe:
+            send_vehicle_status(1)
+        else:
+            send_vehicle_status(0)
+
         # ----- Vehicle Status API -----
         try:
             res = requests.get("http://localhost:5000/get")
             if res.ok:
                 data = res.json()
-                if "message" in data:
-                    car_status_placeholder.markdown(f"### 🛑 {data['message']}")
+                if data.get('status') == 0:
+                    car_status_placeholder.markdown(f"### 🛑 Vehicle STOPPED by System")
+                elif data.get('status') == 1:
+                    car_status_placeholder.markdown(f"### ✅ Vehicle Running")
                 else:
-                    car_status_placeholder.markdown("### ✅ Vehicle Running")
+                    car_status_placeholder.markdown(f"### ❌ Unknown status")
             else:
                 car_status_placeholder.markdown(f"### ❌ Error: Server returned {res.status_code}")
         except Exception as e:
             car_status_placeholder.markdown(f"### ❌ Exception: {e}")
 
-        time.sleep(1)  # Small pause to reduce CPU load
+        time.sleep(1)
 
 # Run app
 if __name__ == "__main__":

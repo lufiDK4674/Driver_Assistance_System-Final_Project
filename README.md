@@ -49,7 +49,7 @@ An intelligent driver and vehicle monitoring system built using **Deep Learning*
 ### 1. Clone this repository
 
 ```bash
-git clone https://github.com/your-username/ai-car-assistant.git
+git clone https://github.com/lufiDK4674/Driver_Assistance_System-Final_Project.git
 cd ai-car-assistant
 ```
 

@@ -197,8 +197,10 @@ def main():
                 res = requests.get("http://localhost:5000/full-status", timeout=2)
                 if res.ok:
                     data = res.json()
-                    ai = data.get("ai_control_status")
-                    vehicle = data.get("vehicle_reported_status")
+                    ai = int(data.get("ai_control_status"))
+                    vehicle = 1 if data.get("vehicle_status") == "CLEAR" else 0
+
+                    print(f"[DEBUG] AI={ai}, Vehicle={vehicle}")  # debugging
 
                     if ai == 1 and vehicle == 1:
                         car_status_placeholder.markdown("### ✅ Vehicle Running")

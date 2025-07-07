@@ -2,3 +2,5 @@
 *.h5
 *.keras
 *.dat
+*.pth
+*.xml

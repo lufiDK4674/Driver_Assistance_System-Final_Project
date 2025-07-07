@@ -14,7 +14,7 @@ import streamlit as st
 import requests
 
 # ---------------- Streamlit UI Setup ----------------
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide")  # <<< This must be FIRST Streamlit command
 st.title("🚗 Smart Driver & Vehicle Monitoring Dashboard")
 
 col1, col2 = st.columns(2)

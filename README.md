@@ -127,6 +127,7 @@ The dashboard opens in your browser.
 * Road Rage Alert 🛑
 * Mood Detected: Angry 😠
 * Animal Detected: Emergency Brake 🐶
+#### Watch sample video in output Folder
 
 ---
 
@@ -137,13 +138,5 @@ The dashboard opens in your browser.
 * Expand wildlife detection with drone-based FLIR inputs
 * Deploy to Jetson Nano or Raspberry Pi for in-car usage
 
----
-
-## 📚 Credits
-
-Built by **Divyanshu Kumar**
-B.Tech in Computer Science & Engineering
-Dumka Engineering College, Jharkhand
-Guided by: **Dr. Amit Kumar Pramanik**
 
 

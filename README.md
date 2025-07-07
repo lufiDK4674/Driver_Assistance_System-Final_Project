@@ -1,9 +1,4 @@
 # Driver_Assistance_System-Final_Project
-Here's a clean, developer-friendly `README.md` for your **AI-Powered Intelligent In-Car Assistant System** project, based on your code, report, and use case:
-
----
-
-# 🚗 AI-Powered Intelligent In-Car Assistant System
 
 An intelligent driver and vehicle monitoring system built using **Deep Learning**, **Computer Vision**, and **IoT** that ensures real-time driver safety, mood-based alerts, road rage detection, and autonomous vehicle control via sensors and AI logic.
 

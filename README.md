@@ -134,8 +134,6 @@ The dashboard opens in your browser.
 * Mood Detected: Angry 😠
 * Animal Detected: Emergency Brake 🐶
 
-> See the [final report](Final_REPORT_DIVYANSHU.docx) for full visuals and explanation.
-
 ---
 
 ## 🏁 Future Improvements
@@ -154,6 +152,4 @@ B.Tech in Computer Science & Engineering
 Dumka Engineering College, Jharkhand
 Guided by: **Dr. Amit Kumar Pramanik**
 
----
 
-Let me know if you'd like the `README.md` formatted as a downloadable file or want to generate a cover image for the GitHub repo.
